@@ -11,9 +11,6 @@ export default function AnimatedSvgEye(): React.JSX.Element {
   useEffect(() => {
     if (!eyeHolderRef.current || !eyeBallRef.current) return;
 
-    // Set the GSAP baseline center explicitly so x/y percent is distinct from x/y pixels
-    gsap.set(eyeBallRef.current, { xPercent: -50, yPercent: -50 });
-
     // Use GSAP quickTo for smooth high-performance tracking
     const xTo = gsap.quickTo(eyeBallRef.current, "x", { duration: 0.6, ease: "power3.out" });
     const yTo = gsap.quickTo(eyeBallRef.current, "y", { duration: 0.6, ease: "power3.out" });
@@ -70,8 +67,9 @@ export default function AnimatedSvgEye(): React.JSX.Element {
           ref={eyeBallRef}
           src="/images/eye-ball.svg"
           alt=""
-          // Shrank the eyeball scale down to 25% to give plenty of padding from boundary walls
-          className="absolute inset-0 w-[25%] h-[25%] top-1/2 left-1/2 object-contain"
+          // Standard width/height relative to the holder (roughly 30-40% scale works well)
+          // Centered by the relative flex parent container
+          className="absolute w-[35%] h-[35%] object-contain"
         />
       </div>
     </div>
