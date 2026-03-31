@@ -65,11 +65,11 @@ export default function LoadingScreen(): React.JSX.Element | null {
         It still preserves mouse-tracking capability perfectly!
       */}
       <div className="relative flex items-center justify-center w-[400px] h-[250px] mb-8">
-        <AnimatedAsciiEye 
-          className="absolute inset-0 w-full h-full pointer-events-none select-none text-ghost" 
-          scale={0.20} 
-          maxMoveX={20} 
-          maxMoveY={12} 
+        <AnimatedAsciiEye
+          className="absolute inset-0 w-full h-full pointer-events-none select-none text-ghost"
+          scale={0.20}
+          maxMoveX={50}
+          maxMoveY={30}
         />
       </div>
       

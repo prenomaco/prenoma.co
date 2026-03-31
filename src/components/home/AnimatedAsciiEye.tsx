@@ -14,8 +14,8 @@ type AnimatedAsciiEyeProps = {
 export default function AnimatedAsciiEye({
   className = "absolute right-[0%] top-[73px] w-[820px] h-[460px] pointer-events-none select-none text-ghost",
   scale = 0.45,
-  maxMoveX = 64,
-  maxMoveY = 36,
+  maxMoveX = 42,
+  maxMoveY = 22,
 }: AnimatedAsciiEyeProps): React.JSX.Element {
   const eyeHolderRef = useRef<HTMLPreElement>(null);
   const eyeBallRef = useRef<HTMLPreElement>(null);
@@ -36,9 +36,10 @@ export default function AnimatedAsciiEye({
       const deltaX = e.clientX - eyeCenterX;
       const deltaY = e.clientY - eyeCenterY;
 
-      // Restored healthy travel limits for the ASCII version
-      const activeMaxX = 64;
-      const activeMaxY = 36;
+      // Scale max movement by the visual scale so the ball stays within
+      // the rendered eye boundary regardless of how large/small the eye appears
+      const activeMaxX = maxMoveX * scale;
+      const activeMaxY = maxMoveY * scale;
 
       const moveX = Math.max(-activeMaxX, Math.min(activeMaxX, deltaX * 0.15));
       const moveY = Math.max(-activeMaxY, Math.min(activeMaxY, deltaY * 0.15));
