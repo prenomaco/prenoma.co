@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# AI / Workflow
+.ai-workflow/
+.agent/
+.claude/
+.gemini/
+design/
+/generate-ascii.js
+/tmp/

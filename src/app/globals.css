@@ -1,26 +1,41 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Why: @theme inline makes tokens available as CSS variables AND Tailwind classes simultaneously */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Primary palette — exact hex from Figma node fills */
+  --color-ink: #1C1917;
+  --color-cream: #F3E2C8;
+  --color-parchment: #DBCBA9;
+  --color-ember: #E84118;
+  --color-sand: #D4B896;
+  --color-ash: #2A2825;
+  --color-ghost: #C8BEA8;
+  --color-border: #2E2C28;
+
+  /* Semantic aliases */
+  --color-background: #1C1917;
+  --color-foreground: #F3E2C8;
+
+  /* Font families — Manrope is the CONFIRMED brand font, NOT Inter */
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+
+  /* Why: Design is fully sharp-cornered — no border radius anywhere */
+  --radius-none: 0px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html,
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-parchment);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
 }
