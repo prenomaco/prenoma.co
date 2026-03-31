@@ -23,6 +23,9 @@ export default function AnimatedAsciiEye({
   useEffect(() => {
     if (!eyeHolderRef.current || !eyeBallRef.current) return;
 
+    // Fix centering baseline manually before GSAP starts moving it
+    gsap.set(eyeBallRef.current, { xPercent: -50, yPercent: -50 });
+
     const xTo = gsap.quickTo(eyeBallRef.current, "x", { duration: 0.6, ease: "power3.out" });
     const yTo = gsap.quickTo(eyeBallRef.current, "y", { duration: 0.6, ease: "power3.out" });
 
@@ -36,8 +39,12 @@ export default function AnimatedAsciiEye({
       const deltaX = e.clientX - eyeCenterX;
       const deltaY = e.clientY - eyeCenterY;
 
-      const moveX = Math.max(-maxMoveX, Math.min(maxMoveX, deltaX * 0.15));
-      const moveY = Math.max(-maxMoveY, Math.min(maxMoveY, deltaY * 0.15));
+      // Tight constraints for the small ASCII eye ball
+      const activeMaxX = 24;
+      const activeMaxY = 16;
+
+      const moveX = Math.max(-activeMaxX, Math.min(activeMaxX, deltaX * 0.12));
+      const moveY = Math.max(-activeMaxY, Math.min(activeMaxY, deltaY * 0.12));
 
       xTo(moveX);
       yTo(moveY);
