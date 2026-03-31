@@ -41,10 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 # AI / Workflow
-.ai-workflow/
 .agent/
 .claude/
 .gemini/
-design/
 /generate-ascii.js
 /tmp/
