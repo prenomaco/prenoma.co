@@ -31,16 +31,19 @@ export default function FooterBar(): React.JSX.Element {
       className="
         fixed bottom-0 left-0 right-0 z-40
         flex items-center justify-between
-        pl-[105px] pr-[105px] py-5
+        px-4 py-3
+        sm:px-8 sm:py-4
+        lg:pl-[105px] lg:pr-[105px] lg:py-5
         text-xs font-normal tracking-wide text-parchment
-        pointer-events-none font-mono
+        pointer-events-none font-sans
       "
     >
       {/* Left: email + live timestamp */}
-      <span className="pointer-events-auto">
-        hello@prenoma.co
-        <span className="text-ember mx-1">•</span>
-        {timestamp}
+      <span className="pointer-events-auto flex items-center flex-wrap gap-x-1">
+        {/* Hide email on very small screens to prevent overflow */}
+        <span className="hidden sm:inline">hello@prenoma.co</span>
+        <span className="text-ember mx-0.5 hidden sm:inline">•</span>
+        <span>{timestamp}</span>
       </span>
 
       {/* Right: legal + copyright */}
@@ -56,10 +59,12 @@ export default function FooterBar(): React.JSX.Element {
           href="/privacy"
           className="hover:text-cream transition-colors duration-200"
         >
-          Privacy Policy
+          {/* Abbreviate on mobile */}
+          <span className="hidden sm:inline">Privacy Policy</span>
+          <span className="sm:hidden">Privacy</span>
         </a>
         {/* Why: "2K26" is intentional brand styling — NOT "2026" */}
-        <span className="ml-6">©2K26 prenoma.co</span>
+        <span className="ml-3 sm:ml-6 hidden sm:inline">©2K26 prenoma.co</span>
       </span>
     </footer>
   );

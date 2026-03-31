@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
-import AnimatedAsciiEye from "../home/AnimatedAsciiEye";
 
 /* 
   FALLBACK FOR LATER (STATIC ASCII VERSION)
@@ -60,22 +59,34 @@ export default function LoadingScreen(): React.JSX.Element | null {
       ref={containerRef}
       className="fixed inset-0 z-[999] bg-ink flex flex-col items-center justify-center text-ghost overflow-hidden"
     >
-      {/* 
-        We use AnimatedAsciiEye but heavily scaled down for the loading state center. 
-        It still preserves mouse-tracking capability perfectly!
-      */}
-      <div className="relative flex items-center justify-center w-[400px] h-[250px] mb-8">
-        <AnimatedAsciiEye
-          className="absolute inset-0 w-full h-full pointer-events-none select-none text-ghost"
-          scale={0.20}
-          maxMoveX={50}
-          maxMoveY={30}
-        />
+      <style>{`
+        @keyframes glint {
+          0% { background-position: 200% center; }
+          100% { background-position: -200% center; }
+        }
+        .animate-glint {
+          background-image: linear-gradient(
+            90deg,
+            var(--color-ghost) 0%,
+            var(--color-ghost) 40%,
+            var(--color-cream) 50%,
+            var(--color-ghost) 60%,
+            var(--color-ghost) 100%
+          );
+          background-size: 200% auto;
+          color: transparent;
+          -webkit-background-clip: text;
+          background-clip: text;
+          animation: glint 2.5s linear infinite;
+        }
+      `}</style>
+
+      <div className="text-center font-bold uppercase px-4">
+        {/* Pure Glinting Text for all screen sizes */}
+        <p className="text-[16px] sm:text-[20px] tracking-[0.4em] sm:tracking-[0.5em] leading-relaxed animate-glint">
+          PRENOMA.CO
+        </p>
       </div>
-      
-      <p className="font-mono text-[11px] tracking-[0.55em] uppercase text-cream font-medium opacity-80">
-        Prenoma.co // Initializing Your Vision
-      </p>
     </div>
   );
 }

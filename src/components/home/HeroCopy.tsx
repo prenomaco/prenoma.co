@@ -41,70 +41,74 @@ export default function HeroCopy(): React.JSX.Element {
   }, []);
 
   return (
-    <div className="flex flex-col">
-      {/* Logo wordmark — Figma node 2:92, group size: 285.41 × 45px */}
-      {/* Why: Source PNG is 1080×1080 square which distorts at 285×45. Using text spans
-          with proper font/color gives pixel-perfect match to the Figma vector group.
-          'prenoma' in parchment, '.co' in ember — exact brand colours. */}
-      <div ref={logoRef} className="mb-0 opacity-0 h-[35px] flex items-center">
-        <span className="text-[28px] font-bold text-cream leading-none tracking-tight">
+    <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+      {/* Logo wordmark */}
+      {/* Why: 'prenoma' in cream, '.co' in ember — exact brand colours. */}
+      <div ref={logoRef} className="mb-6 lg:mb-0 opacity-0 flex items-center h-[28px] sm:h-[35px]">
+        <span className="text-[24px] sm:text-[28px] font-bold text-cream leading-none tracking-tight">
           prenoma
         </span>
-        <span className="text-[28px] font-bold text-ember leading-none tracking-tight">
+        <span className="text-[24px] sm:text-[28px] font-bold text-ember leading-none tracking-tight">
           .co
         </span>
       </div>
 
-      {/* ─── Horizontal ruler 1 (Figma vector 2:128, y=813) ─── */}
-      {/* Why: Sits at the TOP EDGE of the headline, right below the logo.
-          In Figma this line goes full-width at y=813, touching the cap-height
-          of "WE MAKE STUNNING WEBSITES". We use negative margin to extend
-          the line beyond the parent's 105px left offset to cover full viewport width. */}
+      {/* ─── Horizontal ruler 1 — top edge of the headline ─── */}
+      {/* Why: Hidden on mobile/tablet. Negative margin mirrors the parent's col px-4 offset at each breakpoint:
+          -ml-4 negates the `px-4` on mobile, -ml-[105px] negates `lg:left-[105px]` on desktop.
+          w-screen then stretches the line across the full viewport width.
+          self-start avoids it being squashed by flex items-center. */}
       <div
-        className="pointer-events-none"
-        style={{
-          marginLeft: "-105px",
-          width: "100vw",
-          height: "1px",
-          background: "var(--color-border)",
-        }}
+        className="hidden lg:block self-start pointer-events-none -ml-4 lg:-ml-[105px] w-screen h-px mb-6 lg:mb-0"
+        style={{ background: "var(--color-border)" }}
         aria-hidden="true"
       />
 
-      {/* Hero headline — EXACT: 65.439px, font-bold (700), #F3E2C8 */}
-      {/* Why: Figma node 2:104 specifies exactly 65.439px at position y:807.886 */}
+      {/* Hero headline — responsive font-size */}
+      {/* Why: `text-balance` is ideal, but here we manually split for lg+.
+          `whitespace-nowrap` is REMOVED for mobile — it only makes sense on lg+. */}
       <h1
         ref={headlineRef}
-        className="text-[50px] font-bold leading-normal text-cream uppercase whitespace-nowrap opacity-0"
+        className="
+          text-[32px] leading-tight mb-6 lg:mb-0
+          sm:text-[42px]
+          md:text-[48px]
+          lg:text-[50px] lg:whitespace-nowrap lg:leading-normal
+          font-bold text-cream uppercase opacity-0
+        "
       >
         WE MAKE STUNNING WEBSITES
       </h1>
 
-      {/* Tagline — EXACT: 31.123px, font-bold (700), #DBCBA9, gap: 18px */}
-      {/* Why: Bullets are SVG ellipses (11×11px) per Figma, NOT typed '•' characters */}
+      {/* Tagline — responsive font-size and spacing */}
       <div
         ref={taglineRef}
-        className="flex items-center gap-[15px] mt-0 opacity-0"
+        className="flex items-center gap-[12px] sm:gap-[15px] mb-8 lg:mb-0 lg:mt-0 opacity-0"
       >
-        <span className="text-[23px] font-bold text-parchment leading-normal">
+        <span className="text-[18px] sm:text-[20px] lg:text-[23px] font-bold text-parchment leading-normal">
           affordable
         </span>
-        {/* Scaled: 11px -> 8px */}
-        <div className="w-[8px] h-[8px] rounded-full bg-ember shrink-0" />
-        <span className="text-[23px] font-bold text-parchment leading-normal">
+        <div className="w-[6px] h-[6px] sm:w-[8px] sm:h-[8px] rounded-full bg-ember shrink-0" />
+        <span className="text-[18px] sm:text-[20px] lg:text-[23px] font-bold text-parchment leading-normal">
           fast
         </span>
-        <div className="w-[8px] h-[8px] rounded-full bg-ember shrink-0" />
-        <span className="text-[23px] font-bold text-parchment leading-normal">
+        <div className="w-[6px] h-[6px] sm:w-[8px] sm:h-[8px] rounded-full bg-ember shrink-0" />
+        <span className="text-[18px] sm:text-[20px] lg:text-[23px] font-bold text-parchment leading-normal">
           beautiful
         </span>
       </div>
 
-      {/* CTA Row */}
-      <div ref={ctaRef} className="flex items-center gap-[30px] mt-5 opacity-0">
+      {/* CTA Row — stack on mobile, row on sm+ */}
+      <div ref={ctaRef} className="flex flex-col sm:flex-row items-center gap-6 sm:gap-[30px] opacity-0 lg:mt-5">
         <Link
           href="/pricing"
-          className="inline-flex items-center justify-center gap-2 bg-parchment text-ink text-[19px] font-normal w-[240px] h-[46px] rounded-none hover:opacity-90 transition-opacity duration-200"
+          className="
+            inline-flex items-center justify-center gap-2
+            bg-parchment text-ink font-normal rounded-none
+            text-[16px] w-[200px] h-[46px]
+            sm:text-[19px] sm:w-[240px]
+            hover:opacity-90 transition-opacity duration-200
+          "
         >
           Check out Pricing
           <ArrowUpRight size={18} strokeWidth={2} />

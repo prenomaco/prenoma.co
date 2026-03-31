@@ -25,6 +25,20 @@
 }
 
 @layer base {
+  /* Footer height token — used by HeroSection to clear the fixed footer.
+     py-3 = 24px, text-xs ≈ 12px + 2px gap ≈ ~44px on mobile.
+     py-4 (sm) = 32px + text ≈ ~48px.
+     py-5 (lg) = 40px + text ≈ ~56px (the original Figma spec). */
+  :root {
+    --footer-h: 44px;
+  }
+  @media (min-width: 640px) {
+    :root { --footer-h: 48px; }
+  }
+  @media (min-width: 1024px) {
+    :root { --footer-h: 56px; }
+  }
+
   html,
   body {
     background-color: var(--color-ink);
