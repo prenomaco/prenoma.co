@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import FooterBar from "@/components/layout/FooterBar";
 import LoadingScreen from "@/components/common/LoadingScreen";
+import CustomCursor from "@/components/common/CustomCursor";
 import "./globals.css";
 
 // Why: Manrope is the confirmed brand font from Figma.
@@ -29,6 +30,7 @@ export default function RootLayout({
     <html lang="en" className={`${manrope.variable} antialiased`}>
       <body className="font-sans" suppressHydrationWarning>
         <LoadingScreen />
+        <CustomCursor />
         <Navbar />
         <main>{children}</main>
         <FooterBar />

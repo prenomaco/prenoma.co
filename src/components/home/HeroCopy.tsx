@@ -12,8 +12,9 @@ export default function HeroCopy(): React.JSX.Element {
   const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Why: Staggered entry builds visual rhythm and premium feel
-    const tl = gsap.timeline();
+    // Why: Staggered entry builds visual rhythm and premium feel.
+    // Delay timeline 1.5s to wait for the LoadingScreen to fade out!
+    const tl = gsap.timeline({ delay: 1.5 });
     tl.fromTo(
       logoRef.current,
       { opacity: 0, y: 10 },

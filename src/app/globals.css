@@ -52,3 +52,10 @@
     overflow-x: hidden;
   }
 }
+
+/* Hide default cursor on devices that use a mouse (not mobile touch screens) */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}
