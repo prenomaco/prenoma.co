@@ -2,19 +2,19 @@
 
 /* Why: @theme inline makes tokens available as CSS variables AND Tailwind classes simultaneously */
 @theme inline {
-  /* Primary palette — exact hex from Figma node fills */
-  --color-ink: #1C1917;
-  --color-cream: #F3E2C8;
-  --color-parchment: #DBCBA9;
+  /* Primary palette — matched from Figma node 106:2 */
+  --color-ink: #161415;
+  --color-cream: #F0DFC0;
+  --color-parchment: #D4C9A8;
   --color-ember: #E84118;
   --color-sand: #D4B896;
-  --color-ash: #2A2825;
-  --color-ghost: #C8BEA8;
+  --color-ash: #1E1D1B;
+  --color-ghost: #B8AE94;
   --color-border: #2E2C28;
 
   /* Semantic aliases */
-  --color-background: #1C1917;
-  --color-foreground: #F3E2C8;
+  --color-background: #161415;
+  --color-foreground: #F0DFC0;
 
   /* Font families — Manrope is the CONFIRMED brand font, NOT Inter */
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;

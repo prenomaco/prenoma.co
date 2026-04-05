@@ -116,36 +116,41 @@ export default function AsciiHoverCanvas({
     if (!section) return;
     const sectionRect = section.getBoundingClientRect();
 
-    const asciiTop = 73;
-    const copyEl = section.querySelector("[data-hero-copy]");
-    let asciiBottomGap: number;
-    if (copyEl) {
-      const copyRect = copyEl.getBoundingClientRect();
-      asciiBottomGap = sectionRect.bottom - copyRect.top;
-    } else {
-      asciiBottomGap = sectionRect.height * 0.29;
-    }
+    // ── Find exact anchor points ──
+    const logoEl = section.querySelector("[data-logo-target]");
+    const taglineEl = section.querySelector("[data-tagline-target]");
 
-    const availableHeight = sectionRect.height - asciiTop - asciiBottomGap;
-    if (availableHeight <= 0) return;
+    if (!logoEl || !taglineEl) return;
 
-    // Set container to match Base Layer's scaled bounds exactly as before
-    const baseScale = availableHeight / baseNaturalHeight;
-    const containerWidth = baseNaturalWidth * baseScale;
+    const logoRect = logoEl.getBoundingClientRect();
+    const taglineRect = taglineEl.getBoundingClientRect();
 
-    container.style.top = `${asciiTop}px`;
-    container.style.height = `${availableHeight}px`;
+    // The logic: 
+    // Left edge of ASCII = Right edge of "prenoma.co"
+    // Bottom edge of ASCII = Bottom edge of tagline
+    const leftPx = logoRect.right - sectionRect.left;
+    const bottomPx = sectionRect.bottom - taglineRect.bottom;
+
+    // TARGET SIZE: 90% size per user request
+    const targetHeight = sectionRect.height * 0.90;
+    const commonScale = targetHeight / baseNaturalHeight;
+    const containerWidth = baseNaturalWidth * commonScale;
+
+    // Position container precisely
+    container.style.left = `${leftPx}px`;
+    container.style.bottom = `${bottomPx}px`;
+    container.style.right = "auto";
+    container.style.top = "auto";
+    container.style.height = `${targetHeight}px`;
     container.style.width = `${containerWidth}px`;
 
-    // Now scale EACH layer so it mathematically hits the SAME target height!
-    // Since L2 and L3 have a smaller natural height, their scale multiplier 
-    // will be larger, expanding their font visually to create the zoom effect!
+    // Each layer uses the SAME scale (commonScale) anchored at bottom-left
     layers.forEach((l) => {
       const pre = l.pre!;
       const naturalHeight = pre.scrollHeight;
       if (naturalHeight > 0) {
-        const scale = availableHeight / naturalHeight;
-        pre.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        const scale = targetHeight / naturalHeight;
+        pre.style.transform = `scale(${scale}) translateZ(0)`;
       }
     });
 
@@ -167,15 +172,20 @@ export default function AsciiHoverCanvas({
     return () => observer.disconnect();
   }, [rescale, trimmedL1, trimmedL2, trimmedL3]);
 
-  // Center alignment styling
+  // Bottom-Left alignment styling for performance
   const preStyles: React.CSSProperties = {
     fontFamily: "'Courier New', Courier, monospace",
     fontSize: "10px",
-    lineHeight: "10px",
+    lineHeight: "1",
+    whiteSpace: "pre",
     letterSpacing: "0px",
-    transformOrigin: "center center",
-    top: "50%",
-    left: "50%",
+    transformOrigin: "left bottom",
+    bottom: "0px",
+    left: "0px",
+    willChange: "transform",
+    textRendering: "optimizeSpeed",
+    // Force compute to GPU
+    backfaceVisibility: "hidden",
   };
 
   return (

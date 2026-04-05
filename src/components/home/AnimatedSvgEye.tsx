@@ -57,18 +57,19 @@ export default function AnimatedSvgEye(): React.JSX.Element {
       aria-hidden="true"
     >
       <div className="relative w-full h-full">
-        <img
+        <Image
           ref={eyeHolderRef}
           src="/images/eye-holder.svg"
           alt=""
-          className="absolute inset-0 w-full h-full object-contain"
+          fill
+          className="object-contain"
         />
-        <img
+        <Image
           ref={eyeBallRef}
           src="/images/eye-ball.svg"
           alt=""
-          // Standard width/height relative to the holder (roughly 30-40% scale works well)
-          // Centered by the relative flex parent container
+          width={200}
+          height={200}
           className="absolute w-[35%] h-[35%] object-contain"
         />
       </div>
