@@ -8,9 +8,9 @@
   --color-parchment: #D4C9A8;
   --color-ember: #E84118;
   --color-sand: #D4B896;
-  --color-ash: #1E1D1B;
+  --color-ash: #161415; /* Updated from #1E1D1B to match main background */
   --color-ghost: #B8AE94;
-  --color-border: #2E2C28;
+  --color-border: #161415; /* Updated from #2E2C28 to match main background */
 
   /* Semantic aliases */
   --color-background: #161415;
