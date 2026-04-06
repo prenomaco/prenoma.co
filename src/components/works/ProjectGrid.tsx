@@ -48,7 +48,7 @@ export default function ProjectGrid(): React.JSX.Element {
   );
 
   return (
-    <div className="flex-1 flex items-center justify-center px-6 sm:px-10 lg:px-12">
+    <div className="flex-1 flex items-start justify-center px-6 sm:px-10 lg:px-12 pt-2">
       <div
         ref={containerRef}
         className="
@@ -56,7 +56,7 @@ export default function ProjectGrid(): React.JSX.Element {
           flex
           w-full
           max-w-[1400px]
-          h-[480px]
+          h-[420px]
           overflow-hidden
         "
       >

@@ -1,12 +1,12 @@
 // Why: Compact header section for Works page
-// Features: Left-aligned title, right-aligned inline CTAs
+// Features: Large title with good spacing, right-aligned inline CTAs
 
 import Link from "next/link";
 
 export default function WorksHero(): React.JSX.Element {
   return (
-    <section className="pt-24 pb-8 px-6 sm:px-10 lg:px-12 flex-shrink-0">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8 max-w-[1400px] mx-auto">
+    <section className="pt-32 pb-4 px-6 sm:px-10 lg:px-12 flex-shrink-0">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-8 max-w-[1400px] mx-auto">
         {/* Left: Title */}
         <h1 className="text-[36px] sm:text-[44px] lg:text-[52px] font-bold text-cream lowercase leading-tight">
           projects @prenoma<span className="text-ember">.co</span>
