@@ -33,43 +33,29 @@ export default function ProjectCard({
     }
   }, []);
 
-  // Why: Smooth width transitions when expanding/collapsing
+  // Why: Animate content opacity while CSS transition handles smooth flex/width changes
   useEffect(() => {
     if (!cardRef.current || reducedMotion.current) return;
 
-    const tl = gsap.timeline();
-
     if (isExpanded) {
-      // Expand animation
-      tl.to(cardRef.current, {
-        flex: 4,
-        duration: 0.7,
-        ease: "power3.inOut",
-      });
-      
-      // Fade in content
+      // Expand: fade in content after flex transition starts
       if (contentRef.current) {
-        tl.to(contentRef.current, {
+        gsap.to(contentRef.current, {
           opacity: 1,
           duration: 0.4,
           ease: "power2.out",
-        }, "-=0.3");
+          delay: 0.2, // Start after flex transition begins
+        });
       }
     } else {
-      // Collapse animation
+      // Collapse: fade out content immediately
       if (contentRef.current) {
-        tl.to(contentRef.current, {
+        gsap.to(contentRef.current, {
           opacity: 0,
           duration: 0.2,
           ease: "power2.in",
         });
       }
-      
-      tl.to(cardRef.current, {
-        flex: 1,
-        duration: 0.7,
-        ease: "power3.inOut",
-      }, "-=0.1");
     }
   }, [isExpanded]);
 

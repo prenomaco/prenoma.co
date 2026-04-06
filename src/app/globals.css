@@ -89,6 +89,12 @@
   }
 }
 
+/* Why: Smooth accordion expand/collapse transitions at higher specificity.
+   CSS transition handles smooth flex/width changes when React state updates */
+.project-card {
+  transition: flex 0.7s cubic-bezier(0.4, 0.0, 0.2, 1) !important;
+}
+
 /* Hide default cursor on devices that use a mouse (not mobile touch screens) */
 @media (pointer: fine) {
   *, *::before, *::after {
