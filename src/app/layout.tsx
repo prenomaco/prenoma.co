@@ -32,7 +32,7 @@ export default function RootLayout({
         <LoadingScreen />
         <CustomCursor />
         <Navbar />
-        <main>{children}</main>
+        <main className="flex-1 flex flex-col min-h-screen">{children}</main>
         <FooterBar />
       </body>
     </html>

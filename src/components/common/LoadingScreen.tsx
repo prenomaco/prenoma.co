@@ -40,14 +40,14 @@ export default function LoadingScreen(): React.JSX.Element | null {
       if (containerRef.current) {
         gsap.to(containerRef.current, {
           opacity: 0,
-          duration: 0.8,
+          duration: 0.4,
           ease: "power2.inOut",
           onComplete: () => {
             setIsLoading(false);
           },
         });
       }
-    }, 1200);
+    }, 600);
 
     return () => clearTimeout(timer);
   }, []);

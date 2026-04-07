@@ -38,8 +38,8 @@ export default function HeroSection(): React.JSX.Element {
         data-hero-copy
         className="
           absolute z-20
-          bottom-[240px] left-6 right-6
-          sm:bottom-[320px] sm:left-10
+          bottom-[340px] left-6 right-6
+          sm:bottom-[400px] sm:left-10
           lg:bottom-[140px] lg:left-[50px] lg:right-auto
         "
       >

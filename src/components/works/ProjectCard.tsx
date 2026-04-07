@@ -23,6 +23,7 @@ export default function ProjectCard({
   const cardRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useRef(false);
+  const initialized = useRef(false);
 
   // Why: Detect reduced motion preference
   useEffect(() => {
@@ -33,29 +34,42 @@ export default function ProjectCard({
     }
   }, []);
 
-  // Why: Animate content opacity while CSS transition handles smooth flex/width changes
+  // Why: GSAP owns opacity entirely — no inline opacity style on this element.
+  // Mixing an inline `style={{ opacity }}` with gsap.to() on the same prop
+  // causes React re-renders to reset the value mid-tween, leaving it stuck.
+  // Fix: gsap.set() sets the initial state on mount, then gsap.killTweensOf()
+  // cancels any in-flight tween before starting a new one.
   useEffect(() => {
-    if (!cardRef.current || reducedMotion.current) return;
+    if (!contentRef.current) return;
+
+    if (!initialized.current) {
+      // First mount: set correct opacity immediately, no animation
+      gsap.set(contentRef.current, { opacity: isExpanded ? 1 : 0 });
+      initialized.current = true;
+      return;
+    }
+
+    if (reducedMotion.current) {
+      gsap.set(contentRef.current, { opacity: isExpanded ? 1 : 0 });
+      return;
+    }
+
+    // Kill any in-progress tween before starting a new one
+    gsap.killTweensOf(contentRef.current);
 
     if (isExpanded) {
-      // Expand: fade in content after flex transition starts
-      if (contentRef.current) {
-        gsap.to(contentRef.current, {
-          opacity: 1,
-          duration: 0.4,
-          ease: "power2.out",
-          delay: 0.2, // Start after flex transition begins
-        });
-      }
+      gsap.to(contentRef.current, {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out",
+        delay: 0.2,
+      });
     } else {
-      // Collapse: fade out content immediately
-      if (contentRef.current) {
-        gsap.to(contentRef.current, {
-          opacity: 0,
-          duration: 0.2,
-          ease: "power2.in",
-        });
-      }
+      gsap.to(contentRef.current, {
+        opacity: 0,
+        duration: 0.2,
+        ease: "power2.in",
+      });
     }
   }, [isExpanded]);
 
@@ -80,20 +94,18 @@ export default function ProjectCard({
           priority
         />
         {/* Dark overlay - darker on collapsed */}
-        <div 
-          className={`absolute inset-0 transition-all duration-500 ${
-            isExpanded 
-              ? "bg-ink/40" 
-              : "bg-ink/70 group-hover:bg-ink/60"
-          }`}
+        <div
+          className={`absolute inset-0 transition-all duration-500 ${isExpanded
+            ? "bg-ink/40"
+            : "bg-ink/70 group-hover:bg-ink/60"
+            }`}
         />
       </div>
 
       {/* Collapsed State: Vertical Text */}
-      <div 
-        className={`absolute inset-0 flex items-end justify-center pb-8 transition-opacity duration-300 ${
-          isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
+      <div
+        className={`absolute inset-0 flex items-end justify-center pb-8 transition-opacity duration-300 ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
       >
         <h3
           className="text-[16px] font-bold text-cream whitespace-nowrap tracking-wider uppercase"
@@ -108,15 +120,15 @@ export default function ProjectCard({
       </div>
 
       {/* Expanded State: Full Content */}
+      {/* Wrapper covers the card area; glass box is absolutely placed bottom-20
+          so it always sits 80 px above the card's bottom edge — clear of the
+          fixed footer bar regardless of viewport height. GSAP owns opacity. */}
       <div
         ref={contentRef}
-        className={`absolute inset-0 flex flex-col justify-end p-6 ${
-          isExpanded ? "" : "pointer-events-none"
-        }`}
-        style={{ opacity: isExpanded ? 1 : 0 }}
-      >
-        {/* Content card with glass effect */}
-        <div className="bg-ink/80 backdrop-blur-sm p-5 border border-ghost/20">
+        className={`absolute inset-0 flex items-center justify-center p-6 ${isExpanded ? "" : "pointer-events-none"
+          }`}
+      >        {/* Glass box: perfectly centered */}
+        <div className="w-full bg-ink/80 backdrop-blur-sm p-6 border border-ghost/20 shadow-2xl">
           {/* Category tag */}
           <p className="text-[11px] text-ember uppercase tracking-widest mb-2">
             {project.category}
@@ -143,12 +155,12 @@ export default function ProjectCard({
               bg-parchment text-ink text-[13px] font-semibold
               hover:bg-ember hover:text-cream
               transition-all duration-300
-              uppercase tracking-wide
+              lowercase tracking-wide
             "
             onClick={(e) => e.stopPropagation()}
-            aria-label={`Visit ${project.title} website`}
+            aria-label={`visit ${project.title} website`}
           >
-            Visit Site
+            visit site
             <span aria-hidden="true">→</span>
           </a>
         </div>

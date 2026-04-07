@@ -1,31 +1,35 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import ContactHero from "@/components/contact/ContactHero";
 import PricingBox from "@/components/contact/PricingBox";
 import ContactForm from "@/components/contact/ContactForm";
+import FooterEye from "@/components/layout/FooterEye";
 
 export default function ContactPage(): React.JSX.Element {
   const contentRef = useRef<HTMLDivElement>(null);
+  useGSAP(
+    () => {
+      if (!contentRef.current) return;
 
-  useEffect(() => {
-    if (!contentRef.current) return;
-
-    // Animate main content in
-    gsap.from(contentRef.current, {
-      opacity: 0,
-      duration: 0.6,
-      ease: "power2.out",
-    });
-  }, []);
+      // Animate main content in
+      gsap.from(contentRef.current, {
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+      });
+    },
+    { scope: contentRef }
+  );
 
   return (
-    <main className="h-screen w-screen bg-ink overflow-hidden flex flex-col">
-      {/* Main content - single screen, no scroll */}
+    <div className="min-h-screen w-full bg-ink flex flex-col relative">
+      {/* Main content - centered vertically on screen but scrollable if clipped */}
       <div
         ref={contentRef}
-        className="flex-1 flex items-center justify-center px-6 sm:px-8 lg:px-12 pt-20 pb-4"
+        className="flex-1 flex items-center justify-center px-6 sm:px-8 lg:px-12 pt-28 pb-12"
       >
         {/* Background animated elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -33,15 +37,15 @@ export default function ContactPage(): React.JSX.Element {
           <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-ember/10 rounded-full blur-3xl opacity-30" />
         </div>
 
-        {/* Content container */}
-        <div className="relative z-10 w-full max-w-7xl">
+        {/* Content container - finely balanced vertically */}
+        <div className="relative z-10 w-full max-w-7xl lg:-translate-y-6">
           {/* Title */}
           <div className="text-center mb-8">
             <h1 className="text-[42px] sm:text-[56px] lg:text-[72px] font-bold text-cream lowercase leading-tight tracking-tight mb-3">
-              Let's build something amazing
+              let's build something amazing
             </h1>
-            <p className="text-[14px] sm:text-[16px] text-parchment/70">
-              Get a custom quote tailored to your vision
+            <p className="text-[14px] sm:text-[16px] text-parchment/70 lowercase">
+              get a custom quote tailored to your vision
             </p>
           </div>
 
@@ -57,18 +61,11 @@ export default function ContactPage(): React.JSX.Element {
             </div>
           </div>
 
-          {/* Email CTA */}
-          <div className="text-center mt-6">
-            <p className="text-parchment/50 text-[12px] mb-2">or email us at</p>
-            <a
-              href="mailto:hello@prenoma.co"
-              className="text-[18px] sm:text-[22px] font-bold text-ember hover:text-cream transition-colors duration-300 lowercase"
-            >
-              hello@prenoma.co
-            </a>
-          </div>
         </div>
       </div>
-    </main>
+
+      {/* Decorative eye — behind footer */}
+      <FooterEye />
+    </div>
   );
 }

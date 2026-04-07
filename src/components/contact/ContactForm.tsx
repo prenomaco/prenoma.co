@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 export default function ContactForm(): React.JSX.Element {
   const [formData, setFormData] = useState({
@@ -16,15 +17,18 @@ export default function ContactForm(): React.JSX.Element {
   const formRef = useRef<HTMLFormElement>(null);
 
   // Entrance animation
-  useEffect(() => {
-    if (!formRef.current) return;
-    gsap.from(formRef.current, {
-      opacity: 0,
-      x: 50,
-      duration: 0.8,
-      ease: "power3.out",
-    });
-  }, []);
+  useGSAP(
+    () => {
+      if (!formRef.current) return;
+      gsap.from(formRef.current, {
+        opacity: 0,
+        x: 50,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+    },
+    { scope: formRef }
+  );
 
   // Parallax tilt effect
   useEffect(() => {
@@ -116,9 +120,9 @@ export default function ContactForm(): React.JSX.Element {
       {success && (
         <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-ink/90 z-50">
           <div className="text-center">
-            <div className="text-3xl mb-2">✓</div>
-            <p className="text-cream text-base font-bold mb-1">Sent!</p>
-            <p className="text-parchment text-xs">We'll get back to you soon.</p>
+            <div className="text-3xl mb-2 text-ember">✓</div>
+            <p className="text-cream text-base font-bold mb-1 lowercase">sent!</p>
+            <p className="text-parchment text-xs lowercase">we'll get back to you soon.</p>
           </div>
         </div>
       )}
@@ -127,9 +131,9 @@ export default function ContactForm(): React.JSX.Element {
       {error && (
         <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-ink/90 z-50">
           <div className="text-center">
-            <div className="text-3xl mb-2">✕</div>
-            <p className="text-ember text-base font-bold mb-1">Error!</p>
-            <p className="text-parchment text-xs">Please try again.</p>
+            <div className="text-3xl mb-2 text-ember">✕</div>
+            <p className="text-ember text-base font-bold mb-1 lowercase">error!</p>
+            <p className="text-parchment text-xs lowercase">please try again.</p>
           </div>
         </div>
       )}
@@ -140,7 +144,7 @@ export default function ContactForm(): React.JSX.Element {
         <input
           type="text"
           name="name"
-          placeholder="Your name"
+          placeholder="your name"
           value={formData.name}
           onChange={handleChange}
           required
@@ -194,7 +198,7 @@ export default function ContactForm(): React.JSX.Element {
         <input
           type="text"
           name="company"
-          placeholder="Company (optional)"
+          placeholder="company (optional)"
           value={formData.company}
           onChange={handleChange}
           autoComplete="off"
@@ -219,7 +223,7 @@ export default function ContactForm(): React.JSX.Element {
         {/* Message */}
         <textarea
           name="message"
-          placeholder="Tell us about your project..."
+          placeholder="tell us about your project..."
           value={formData.message}
           onChange={handleChange}
           required
@@ -255,7 +259,6 @@ export default function ContactForm(): React.JSX.Element {
             text-cream
             text-sm
             font-bold
-            uppercase
             tracking-wide
             hover:bg-ember/90
             disabled:opacity-50
@@ -265,8 +268,16 @@ export default function ContactForm(): React.JSX.Element {
             active:scale-95
           "
         >
-          {loading ? "Sending..." : "Send Message"}
+          {loading ? "sending..." : "send message"}
         </button>
+
+        {/* Legal Disclaimer */}
+        <p className="text-[10px] text-parchment/40 text-center leading-relaxed mt-2">
+          by sending you agree to our{" "}
+          <a href="/terms" className="underline hover:text-ember transition-colors">terms and conditions</a>
+          {" "}and{" "}
+          <a href="/privacy" className="underline hover:text-ember transition-colors">privacy policy</a>
+        </p>
       </div>
     </form>
   );
