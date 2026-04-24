@@ -12,7 +12,7 @@ export default function WorksPage(): React.JSX.Element {
     <div className="min-h-screen w-full bg-ink flex flex-col relative text-cream">
       {/* Hero Section */}
       <WorksHero />
-      
+
       {/* Project Grid - Takes remaining space */}
       <ProjectGrid />
 

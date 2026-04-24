@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 interface ContactRequest {
   name: string;
   email: string;
@@ -24,6 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send email via Resend
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const result = await resend.emails.send({
       from: "prenoma.co <noreply@prenoma.co>",
       to: "company@prenoma.co",

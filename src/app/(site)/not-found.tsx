@@ -9,12 +9,12 @@ export default function NotFound(): React.JSX.Element {
       <h1 className="text-[80px] sm:text-[130px] font-bold text-cream leading-none tracking-tighter">
         404
       </h1>
-      
+
       {/* Target heading with exact phrasing and branding colors */}
       <h2 className="text-[20px] sm:text-[26px] font-bold text-parchment uppercase tracking-normal sm:tracking-wide mt-2 sm:mt-4 mb-8">
         Oops, lost are we?
       </h2>
-      
+
       <div className="w-12 h-1 bg-ember mb-10 mx-auto" aria-hidden="true" />
 
       {/* Call to action reusing the same premium button style from HeroCopy */}
