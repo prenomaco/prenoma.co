@@ -22,10 +22,17 @@ export default function MarqueeBanner(): React.JSX.Element {
         .marquee-track {
           animation: marquee 25s linear infinite;
         }
+        @keyframes bannerEntry {
+          from { transform: translateY(-100%); opacity: 0; }
+          to   { transform: translateY(0);    opacity: 1; }
+        }
+        .marquee-banner {
+          animation: bannerEntry 0.55s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+        }
       `}</style>
 
       <div
-        className="fixed left-0 right-0 z-[60] flex items-center overflow-hidden"
+        className="marquee-banner fixed left-0 right-0 z-[60] flex items-center overflow-hidden"
         style={{ top: 0, height: "38px", background: "#1a1718" }}
         aria-hidden="true"
       >

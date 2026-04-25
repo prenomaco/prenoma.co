@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { hoverEffectEnter, hoverEffectLeave } from "./hoverEffects";
 
 const NAV_ITEMS = [
   { label: "home", href: "/new" },
@@ -48,16 +49,19 @@ export default function NewNavbar(): React.JSX.Element {
           <Link
             key={item.label}
             href={item.href}
-            className="font-bold lowercase transition-colors duration-200"
+            className="font-bold lowercase"
             style={{ fontSize: "18px", color: "#dbcba9" }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.color = "#f35226";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.color = "#dbcba9";
-            }}
           >
-            {item.label}
+            <div style={{ overflow: "hidden", lineHeight: "1.2", height: "1.2em" }}>
+              <span
+                className="flex flex-col"
+                onMouseEnter={hoverEffectEnter}
+                onMouseLeave={hoverEffectLeave}
+              >
+                <span>{item.label}</span>
+                <span aria-hidden="true">{item.label}</span>
+              </span>
+            </div>
           </Link>
         ))}
       </div>

@@ -11,6 +11,10 @@ export default function HeroNew(): React.JSX.Element {
   const ctaRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLDivElement>(null);
   const wordmarkRef = useRef<HTMLDivElement>(null);
+  const viewWorkRef = useRef<HTMLAnchorElement>(null);
+  const contactRef = useRef<HTMLAnchorElement>(null);
+  const downloadRef = useRef<HTMLAnchorElement>(null);
+  const shineRef = useRef<HTMLSpanElement>(null);
 
   useGSAP(() => {
     if (!wordmarkRef.current) return;
@@ -25,6 +29,14 @@ export default function HeroNew(): React.JSX.Element {
     if (!ctaRef.current) return;
     gsap.set(ctaRef.current, { opacity: 0, y: 12 });
     gsap.to(ctaRef.current, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out", delay: 1.8 });
+
+    // repeating shine sweep — starts after button appears, loops every ~4s
+    if (!shineRef.current) return;
+    gsap.fromTo(
+      shineRef.current,
+      { x: "-100%" },
+      { x: "250%", duration: 0.75, ease: "power1.inOut", delay: 2.6, repeat: -1, repeatDelay: 4 }
+    );
   });
 
   useGSAP(() => {
@@ -81,27 +93,51 @@ export default function HeroNew(): React.JSX.Element {
       {/* CTA row */}
       <div ref={ctaRef} className="flex flex-row flex-wrap items-center gap-3">
         <Link
+          ref={viewWorkRef}
           href="/new/projects"
-          className="flex items-center gap-2 lowercase font-bold px-6 py-3 text-[15px] rounded-full"
+          className="relative overflow-hidden flex items-center gap-2 lowercase font-bold px-6 py-3 text-[15px] rounded-full"
           style={{ backgroundColor: "#e04b23", color: "#f3e2c8", boxShadow: "0px 3px 14px rgba(243,82,38,0.55)" }}
+          onMouseEnter={() => { if (viewWorkRef.current) gsap.to(viewWorkRef.current, { scale: 1.04, y: -2, duration: 0.22, ease: "power2.out" }); }}
+          onMouseLeave={() => { if (viewWorkRef.current) gsap.to(viewWorkRef.current, { scale: 1, y: 0, duration: 0.22, ease: "power2.out" }); }}
         >
+          {/* shine sweep */}
+          <span
+            ref={shineRef}
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "40%",
+              height: "100%",
+              background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent)",
+              transform: "skewX(-15deg)",
+              pointerEvents: "none",
+            }}
+          />
           view our work
           <ArrowUpRight size={15} strokeWidth={2.5} />
         </Link>
 
         <Link
+          ref={contactRef}
           href="/new/contact"
           className="flex items-center gap-2 lowercase font-bold border border-[#f3e2c8] rounded-full px-6 py-3 text-[15px]"
           style={{ color: "#dbcba9" }}
+          onMouseEnter={() => { if (contactRef.current) gsap.to(contactRef.current, { scale: 1.04, y: -2, duration: 0.22, ease: "power2.out" }); }}
+          onMouseLeave={() => { if (contactRef.current) gsap.to(contactRef.current, { scale: 1, y: 0, duration: 0.22, ease: "power2.out" }); }}
         >
           get in touch
           <ArrowUpRight size={15} strokeWidth={2.5} />
         </Link>
 
         <a
+          ref={downloadRef}
           href="#"
           className="flex items-center gap-2 underline lowercase font-normal text-[15px]"
           style={{ color: "#f3e2c8" }}
+          onMouseEnter={() => { if (downloadRef.current) gsap.to(downloadRef.current, { opacity: 0.7, duration: 0.2 }); }}
+          onMouseLeave={() => { if (downloadRef.current) gsap.to(downloadRef.current, { opacity: 1, duration: 0.2 }); }}
         >
           <Download size={14} strokeWidth={2} />
           download showcase pdf
