@@ -1,70 +1,57 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import gsap from "gsap";
+import { useRef, useState } from "react";
+import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
+interface FormState {
+  name: string;
+  email: string;
+  company: string;
+  message: string;
+}
+
+const INITIAL_STATE: FormState = {
+  name: "",
+  email: "",
+  company: "",
+  message: "",
+};
+
 export default function ContactForm(): React.JSX.Element {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState<FormState>(INITIAL_STATE);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
 
-  // Entrance animation
-  useGSAP(
-    () => {
-      if (!formRef.current) return;
-      gsap.from(formRef.current, {
-        opacity: 0,
-        x: 50,
-        duration: 0.8,
-        ease: "power3.out",
-      });
-    },
-    { scope: formRef }
-  );
+  const magnetRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const fieldsRef = useRef<HTMLDivElement>(null);
+  const submitAreaRef = useRef<HTMLDivElement>(null);
 
-  // Parallax tilt effect
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!formRef.current) return;
-      const rect = formRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+  useGSAP(() => {
+    if (fieldsRef.current) {
+      gsap.fromTo(
+        fieldsRef.current.children,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, stagger: 0.08, duration: 0.45, ease: "power2.out", delay: 0.6 }
+      );
+    }
+    if (submitAreaRef.current) {
+      gsap.fromTo(
+        submitAreaRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, delay: 1.05 }
+      );
+    }
+  });
 
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      const rotateX = (y - centerY) * 0.01;
-      const rotateY = (x - centerX) * -0.01;
-
-      gsap.to(formRef.current, {
-        rotationX: rotateX,
-        rotationY: rotateY,
-        transformPerspective: 1200,
-        duration: 0.5,
-        overwrite: "auto",
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(false);
@@ -78,14 +65,14 @@ export default function ContactForm(): React.JSX.Element {
 
       if (response.ok) {
         setSuccess(true);
-        setFormData({ name: "", email: "", company: "", message: "" });
+        setFormData(INITIAL_STATE);
         setTimeout(() => setSuccess(false), 4000);
       } else {
         setError(true);
         setTimeout(() => setError(false), 3000);
       }
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Contact form error:", err);
       setError(true);
       setTimeout(() => setError(false), 3000);
     } finally {
@@ -93,192 +80,54 @@ export default function ContactForm(): React.JSX.Element {
     }
   };
 
+  const handleMagnetMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!magnetRef.current || !buttonRef.current) return;
+    const rect = magnetRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distX = e.clientX - centerX;
+    const distY = e.clientY - centerY;
+    const distance = Math.sqrt(distX * distX + distY * distY);
+    if (distance < 60) {
+      gsap.to(buttonRef.current, { x: distX * 0.4, y: distY * 0.4, duration: 0.3, ease: "power2.out" });
+    }
+  };
+
+  const handleMagnetLeave = () => {
+    if (!buttonRef.current) return;
+    gsap.to(buttonRef.current, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.5)" });
+  };
+
+  const fieldClass =
+    "bg-transparent border-b border-white/20 px-0 py-3 text-[#f3e2c8] text-[15px] w-full outline-none " +
+    "placeholder:text-[#dbcba9]/40 lowercase focus:border-[#f35226]/70 transition-colors duration-200";
+
   return (
-    <form
-      ref={formRef}
-      onSubmit={handleSubmit}
-      className="
-        relative
-        w-full
-        max-w-md
-        p-6
-        backdrop-blur-xl
-        bg-white/10
-        border
-        border-white/20
-        shadow-2xl
-        transition-all
-        duration-300
-        hover:bg-white/15
-        hover:border-white/30
-      "
-      style={{
-        transformStyle: "preserve-3d",
-      }}
-    >
-      {/* Success overlay */}
-      {success && (
-        <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-ink/90 z-50">
-          <div className="text-center">
-            <div className="text-3xl mb-2 text-ember">✓</div>
-            <p className="text-cream text-base font-bold mb-1 lowercase">sent!</p>
-            <p className="text-parchment text-xs lowercase">we'll get back to you soon.</p>
-          </div>
+    <div className="flex flex-col h-full w-full">
+      <form onSubmit={handleSubmit} className="flex flex-col h-full">
+        <div ref={fieldsRef} className="flex flex-col gap-5 flex-1">
+          <input type="text" name="name" placeholder="your name" value={formData.name} onChange={handleChange} required autoComplete="off" className={fieldClass} style={{ opacity: 0 }} />
+          <input type="email" name="email" placeholder="your@email.com" value={formData.email} onChange={handleChange} required autoComplete="off" className={fieldClass} style={{ opacity: 0 }} />
+          <input type="text" name="company" placeholder="company (optional)" value={formData.company} onChange={handleChange} autoComplete="off" className={fieldClass} style={{ opacity: 0 }} />
+          <textarea name="message" placeholder="tell us about your project..." value={formData.message} onChange={handleChange} required rows={4} className={`${fieldClass} resize-none`} style={{ opacity: 0 }} />
         </div>
-      )}
 
-      {/* Error overlay */}
-      {error && (
-        <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm bg-ink/90 z-50">
-          <div className="text-center">
-            <div className="text-3xl mb-2 text-ember">✕</div>
-            <p className="text-ember text-base font-bold mb-1 lowercase">error!</p>
-            <p className="text-parchment text-xs lowercase">please try again.</p>
+        <div ref={submitAreaRef} style={{ opacity: 0 }}>
+          <div ref={magnetRef} onMouseMove={handleMagnetMove} onMouseLeave={handleMagnetLeave} className="self-start mt-8">
+            <button
+              ref={buttonRef}
+              type="submit"
+              disabled={loading}
+              className="bg-[#f35226] rounded-full px-6 py-3 text-[#f3e2c8] text-[15px] font-bold lowercase disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ boxShadow: "0px 3px 14px rgba(243,82,38,0.55)" }}
+            >
+              {loading ? "sending..." : "send message"}
+            </button>
           </div>
+          {success && <p className="mt-3 text-[15px] lowercase" style={{ color: "#f35226" }}>sent! we will get back to you soon.</p>}
+          {error && <p className="mt-3 text-[15px] lowercase" style={{ color: "#f35226" }}>something went wrong. please try again.</p>}
         </div>
-      )}
-
-      {/* Form fields */}
-      <div className="space-y-3">
-        {/* Name */}
-        <input
-          type="text"
-          name="name"
-          placeholder="your name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          autoComplete="off"
-          className="
-            w-full
-            px-3
-            py-2
-            text-sm
-            bg-white/5
-            border
-            border-white/20
-            text-cream
-            placeholder-parchment/50
-            focus:outline-none
-            focus:border-ember
-            focus:bg-white/10
-            transition-all
-            duration-200
-          "
-        />
-
-        {/* Email */}
-        <input
-          type="email"
-          name="email"
-          placeholder="your@email.com"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          autoComplete="off"
-          className="
-            w-full
-            px-3
-            py-2
-            text-sm
-            bg-white/5
-            border
-            border-white/20
-            text-cream
-            placeholder-parchment/50
-            focus:outline-none
-            focus:border-ember
-            focus:bg-white/10
-            transition-all
-            duration-200
-          "
-        />
-
-        {/* Company */}
-        <input
-          type="text"
-          name="company"
-          placeholder="company (optional)"
-          value={formData.company}
-          onChange={handleChange}
-          autoComplete="off"
-          className="
-            w-full
-            px-3
-            py-2
-            text-sm
-            bg-white/5
-            border
-            border-white/20
-            text-cream
-            placeholder-parchment/50
-            focus:outline-none
-            focus:border-ember
-            focus:bg-white/10
-            transition-all
-            duration-200
-          "
-        />
-
-        {/* Message */}
-        <textarea
-          name="message"
-          placeholder="tell us about your project..."
-          value={formData.message}
-          onChange={handleChange}
-          required
-          rows={4}
-          className="
-            w-full
-            px-3
-            py-2
-            text-sm
-            bg-white/5
-            border
-            border-white/20
-            text-cream
-            placeholder-parchment/50
-            focus:outline-none
-            focus:border-ember
-            focus:bg-white/10
-            transition-all
-            duration-200
-            resize-none
-          "
-        />
-
-        {/* Submit button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="
-            w-full
-            py-2.5
-            px-4
-            bg-ember
-            text-cream
-            text-sm
-            font-bold
-            tracking-wide
-            hover:bg-ember/90
-            disabled:opacity-50
-            disabled:cursor-not-allowed
-            transition-all
-            duration-200
-            active:scale-95
-          "
-        >
-          {loading ? "sending..." : "send message"}
-        </button>
-
-        {/* Legal Disclaimer */}
-        <p className="text-[10px] text-parchment/40 text-center leading-relaxed mt-2">
-          by sending you agree to our{" "}
-          <a href="/terms" className="underline hover:text-ember transition-colors">terms and conditions</a>
-          {" "}and{" "}
-          <a href="/privacy" className="underline hover:text-ember transition-colors">privacy policy</a>
-        </p>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
