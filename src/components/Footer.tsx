@@ -22,7 +22,7 @@ export default function Footer(): React.JSX.Element {
   return (
     <footer
       ref={footerRef}
-      className="fixed bottom-0 right-0 z-40 pointer-events-none flex items-center gap-6 pb-10 pr-12"
+      className="fixed bottom-0 right-0 z-40 pointer-events-none flex items-center gap-6 pb-10 pr-5 md:pr-12"
       aria-label="Site footer"
     >
       <Link

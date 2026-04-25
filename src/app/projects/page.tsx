@@ -58,17 +58,17 @@ export default function ProjectsPage(): React.JSX.Element {
   }));
 
   return (
-    <main className="h-dvh overflow-hidden flex flex-col pt-32 pb-8 px-12">
+    <main className="h-dvh overflow-hidden flex flex-col pt-32 pb-20 md:pb-8 px-5 md:px-12">
       <div
         ref={headerRef}
-        className="flex items-end justify-between flex-none mb-4"
+        className="flex flex-col gap-3 flex-none mb-4 md:flex-row md:items-end md:justify-between"
         style={{ opacity: 0 }}
       >
         <h1 className="font-bold lowercase leading-[1.1]" style={{ fontSize: "clamp(28px, 3.2vw, 52px)" }}>
           <SplitText text="our projects" as="span" delay={0.8} className="text-[#f3e2c8]" />
           <span className="text-[#f35226]" style={{ opacity: 0, display: "inline" }} ref={dotRef}>.</span>
         </h1>
-        <div ref={filterRef} style={{ opacity: 0 }}>
+        <div ref={filterRef} className="self-start md:self-auto" style={{ opacity: 0 }}>
           <FilterTabs active={activeFilter} onChange={setActiveFilter} />
         </div>
       </div>

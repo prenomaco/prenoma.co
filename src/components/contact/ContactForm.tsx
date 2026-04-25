@@ -103,9 +103,9 @@ export default function ContactForm(): React.JSX.Element {
     "placeholder:text-[#dbcba9]/40 lowercase focus:border-[#f35226]/70 transition-colors duration-200";
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <form onSubmit={handleSubmit} className="flex flex-col h-full">
-        <div ref={fieldsRef} className="flex flex-col gap-5 flex-1">
+    <div className="flex flex-col w-full">
+      <form onSubmit={handleSubmit} className="flex flex-col">
+        <div ref={fieldsRef} className="flex flex-col gap-5">
           <input type="text" name="name" placeholder="your name" value={formData.name} onChange={handleChange} required autoComplete="off" className={fieldClass} style={{ opacity: 0 }} />
           <input type="email" name="email" placeholder="your@email.com" value={formData.email} onChange={handleChange} required autoComplete="off" className={fieldClass} style={{ opacity: 0 }} />
           <input type="text" name="company" placeholder="company (optional)" value={formData.company} onChange={handleChange} autoComplete="off" className={fieldClass} style={{ opacity: 0 }} />

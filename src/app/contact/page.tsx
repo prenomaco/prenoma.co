@@ -30,10 +30,10 @@ export default function ContactPage(): React.JSX.Element {
   });
 
   return (
-    <main className="h-dvh overflow-hidden w-full flex items-center px-12 pt-36 pb-24">
-      <div className="w-full h-full flex gap-10 items-stretch">
+    <main className="min-h-dvh overflow-x-hidden overflow-y-auto w-full flex items-center px-5 pt-28 pb-36 md:px-12 md:pt-36 md:pb-24">
+      <div className="w-full flex flex-col gap-6 md:flex-row md:gap-10 md:items-stretch md:h-full">
         {/* LEFT */}
-        <div className="basis-[52%] flex flex-col justify-center pb-4 gap-5">
+        <div className="md:basis-[52%] flex flex-col justify-center pb-4 gap-5">
           <h1
             className="font-bold text-[#f3e2c8] lowercase leading-[1.025]"
             style={{ fontSize: "clamp(40px, 5.2vw, 78px)" }}
@@ -77,10 +77,10 @@ export default function ContactPage(): React.JSX.Element {
         </div>
 
         {/* RIGHT — glass card */}
-        <div ref={rightRef} className="basis-[48%] flex items-stretch" style={{ opacity: 0 }}>
+        <div ref={rightRef} className="md:basis-[48%] flex items-stretch" style={{ opacity: 0 }}>
           <div
             ref={cardInnerRef}
-            className="relative w-full h-full rounded-[16px] border border-white/[0.06] bg-[rgba(14,12,13,0.6)] backdrop-blur-xl px-10 pt-7 pb-10 flex flex-col overflow-hidden"
+            className="relative w-full md:h-full rounded-[16px] border border-white/[0.06] bg-[rgba(14,12,13,0.6)] backdrop-blur-xl px-10 pt-7 pb-20 md:pb-10 flex flex-col overflow-hidden"
           >
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
             <ContactForm />
