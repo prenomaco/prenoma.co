@@ -35,7 +35,7 @@ const sections = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="min-h-screen bg-ink pt-[180px] pb-[80px] px-6 sm:px-10 lg:px-20 text-parchment">
+    <main className="min-h-screen bg-ink pt-[120px] sm:pt-[180px] pb-[80px] px-6 sm:px-10 lg:px-20 text-parchment">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-cream mb-4 tracking-tight lowercase">
           privacy policy

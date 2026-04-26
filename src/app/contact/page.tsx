@@ -13,8 +13,14 @@ export default function ContactPage(): React.JSX.Element {
   const statusRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
   const cardInnerRef = useRef<HTMLDivElement>(null);
+  const questionRef = useRef<HTMLSpanElement>(null);
+  const dotRef = useRef<HTMLSpanElement>(null);
 
   useGSAP(() => {
+    // "have a project" = 16 split letters; last starts at 0.4 + 15*0.028 = 0.82
+    gsap.fromTo(questionRef.current, { y: "110%" }, { y: "0%", duration: 0.55, ease: "power3.out", delay: 0.82 });
+    // "let's discuss" = 14 split letters; last starts at 0.85 + 13*0.028 = 1.214
+    gsap.fromTo(dotRef.current, { y: "110%" }, { y: "0%", duration: 0.55, ease: "power3.out", delay: 1.214 });
     gsap.fromTo(taglineRef.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", delay: 1.1 });
     gsap.fromTo(pillRef.current, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out", delay: 1.3 });
     gsap.fromTo(statusRef.current, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.4, ease: "power2.out", delay: 1.5 });
@@ -40,11 +46,15 @@ export default function ContactPage(): React.JSX.Element {
           >
             <span className="block">
               <SplitText as="span" text="have a project" delay={0.4} className="inline" />
-              <span className="text-[#f35226]">?</span>
+              <span style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", paddingBottom: "0.18em", marginBottom: "-0.18em" }}>
+                <span ref={questionRef} className="text-[#f35226]" style={{ display: "inline-block" }}>?</span>
+              </span>
             </span>
             <span className="block">
               <SplitText as="span" text="let's discuss" delay={0.85} className="inline" />
-              <span className="text-[#f35226]">.</span>
+              <span style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom", paddingBottom: "0.18em", marginBottom: "-0.18em" }}>
+                <span ref={dotRef} className="text-[#f35226]" style={{ display: "inline-block" }}>.</span>
+              </span>
             </span>
           </h1>
 
