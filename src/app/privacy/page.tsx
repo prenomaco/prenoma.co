@@ -66,24 +66,24 @@ export default function PrivacyPolicyPage() {
               <p>
                 <span className="text-cream font-medium">name</span>
                 <br />
-                Hemanth Tenneti
+                Aaloke Eppalapalli
               </p>
               <p>
                 <span className="text-cream font-medium">email</span>
                 <br />
                 <a
-                  href="mailto:hemath@prenoma.co"
+                  href="mailto:aaloke@prenoma.co"
                   className="hover:text-ember transition-colors duration-200"
                 >
-                  hemath@prenoma.co
+                  aaloke@prenoma.co
                 </a>
               </p>
               <p>
                 <span className="text-cream font-medium">address</span>
                 <br />
-                Defence Colony, Sainikpuri, Secunderabad
+                Defence Colony Layout, Hill Top Colony, Sainikpuri
                 <br />
-                Hyderabad – 500094, Telangana, India
+                Secunderabad, Telangana – 500094, India
               </p>
             </div>
           </section>
