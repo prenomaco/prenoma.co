@@ -42,7 +42,7 @@ export default function ProjectsPage(): React.JSX.Element {
   }, []);
 
   const getFiltered = useCallback((cat: string): Project[] => {
-    if (cat === "all") return PROJECTS;
+    if (cat === "all") return PROJECTS.filter((p) => !p.isPlaceholder);
     return PROJECTS.filter((p) => p.category.toLowerCase() === cat);
   }, []);
 
@@ -73,18 +73,29 @@ export default function ProjectsPage(): React.JSX.Element {
         </div>
       </div>
       <div ref={cardsRef} className="flex-1 min-h-0 overflow-visible" style={{ opacity: 0 }}>
-        <CardStack
-          items={cardItems}
-          cardWidth={300}
-          cardHeight={354}
-          spreadDeg={20}
-          showDots={false}
-          loop={true}
-          renderCard={(item) => {
-            const project = filtered.find((p) => p.id === item.id)!;
-            return <ProjectCard project={project} />;
-          }}
-        />
+        {filtered.length === 0 && activeFilter !== "motion" ? (
+          <div className="flex h-full items-center justify-center">
+            <p
+              className="font-mono lowercase tracking-[0.12em] text-[13px]"
+              style={{ color: "rgba(219,203,169,0.40)" }}
+            >
+              no projects yet
+            </p>
+          </div>
+        ) : (
+          <CardStack
+            items={cardItems}
+            cardWidth={300}
+            cardHeight={354}
+            spreadDeg={20}
+            showDots={false}
+            loop={true}
+            renderCard={(item) => {
+              const project = filtered.find((p) => p.id === item.id)!;
+              return <ProjectCard project={project} />;
+            }}
+          />
+        )}
       </div>
     </main>
   );
